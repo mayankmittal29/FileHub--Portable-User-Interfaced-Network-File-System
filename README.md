@@ -1,18 +1,19 @@
-# Network File System (NFS) Implementation
+# Network File System (NFS) Implementation 📁
 
 ## Introduction
 The project involves creating a Network File System (NFS) comprising three main components: Clients, Naming Server (NM), and Storage Servers (SS). Clients interact with the NFS to perform operations such as reading, writing, deleting, and more. The NM acts as a central hub, coordinating communication between clients and storage servers, while Storage Servers manage the physical storage and retrieval of files.
-- Problem Statement can be found here [Problem Statement NFS](https://nfs.tiiny.site/)
 
-## How to Run this
-- clone this repo.
-- Run ```script.sh``` script in that directory.
-- Do./nm in the terminal which is in this Dir only
-- Do ./ss in D1
-- Do ./ss in D2
-- Do ./c in this dir only 
+- Problem Statement can be found [here](https://nfs.tiiny.site/) 🚀
 
-### Available Commands
+## How to Run this 🛠️
+- Clone this repository.
+- Run `script.sh` script in the cloned directory.
+- Execute `./nm` in the terminal within this directory.
+- Execute `./ss` in Directory 1 (D1).
+- Execute `./ss` in Directory 2 (D2).
+- Execute `./c` in this directory for clients.
+
+### Available Commands 📋
 - **CREATE:** Create a file.
 - **CREATE_D:** Create a directory.
 - **DELETE:** Delete a file/directory.
@@ -22,9 +23,9 @@ The project involves creating a Network File System (NFS) comprising three main 
 - **COPY:** Copy a file from one location to another.
 - **COPY_D:** Copy a directory from one location to another.
 
-## Specifications
+## Specifications 📄
 
-### 1. Naming and Storage Servers
+### 1. Naming and Storage Servers 🖥️
 #### 1.1 Initialization
 - **Initialize Naming Server (NM):** Set up the central coordination point managing the directory structure and file location information.
   - **Solution:** Define a port for NM in `header.h`; NM listens on that port.
@@ -66,7 +67,7 @@ The project involves creating a Network File System (NFS) comprising three main 
 - **Client Task Feedback:** Provide timely and relevant feedback to clients upon completion of tasks.
   - **Solution:** The naming server sends an acknowledgment to the client upon completion of the tasks. The struct contains a special attribute to store which client acknowledgment should be sent.
 
-### 2. Clients
+### 2. Clients 🖥️
 - **Clients communication with the NM:**
     - **Solution:** Clients initiate communication by connecting to NM with a unique client ID. The client is then prompted for various commands it can perform.
 
@@ -78,15 +79,15 @@ The project involves creating a Network File System (NFS) comprising three main 
   - Copying Files/Directories Between Storage Servers.
     - **Solution:** The client sends the respective command along with the path. NM searches in the cache first, followed by the trie (in case of cache miss), and sends the message to the SS, which sends the list of paths for the directory to be copied or the file. NM creates and copies the contents in the other SS. Finally, an acknowledgment is sent to the client.
 
-### 3. Other Features
-#### 3.1 Multiple Clients
+### 3. Other Features 🌟
+#### 3.1 Multiple Clients 🚀
 - **Concurrent Client Access:**
   - Respond to client requests with an initial ACK for concurrent access.
     - **Solution:** Use the `select` system call for multiclient access. The client receives an acknowledgment whenever the task is completed, either successfully or with failure.
   - Handle multiple requests between initial and final ACK from relevant Storage Server.
     - **Solution:** The client can perform multiple operations in the NFS. Multiple clients can connect at the same time, and new clients can connect whenever they arrive.
 
-#### 3.2 Error Codes
+#### 3.2 Error Codes ❌
 - **Error Handling:**
   - Define clear and descriptive error codes for various client request scenarios.
     - **Solution:** Error codes for different operations are defined and sent to the client in case of failure.
@@ -100,7 +101,7 @@ The project involves creating a Network File System (NFS) comprising three main 
     #define ERROR_INFO 106
     ```
 
-#### 3.3 Search in Naming Servers
+#### 3.3 Search in Naming Servers 🔍
 - **Efficient Search:**
   - Optimize the search process using efficient data structures (e.g., Tries, Hashmaps).
     - **Solution:** Implemented tries to search the path before any operation. Used functions to perform various operations like InsertPath, DeletePath.
@@ -108,7 +109,7 @@ The project involves creating a Network File System (NFS) comprising three main 
   - Implement Least Recently Used (LRU) caching for recent searches.
     - **Solution:** Used a linked list to store the path (20), and this cache remains active during the session only.
 
-#### 3.4 Redundancy/Replication
+#### 3.4 Redundancy/Replication 🔄
 - **Failure Detection:**
   - Equip NM to detect Storage Server failures.
     - **Solution:** The NM will get a message in the recv function, and the code searches for the server number and displays the message that the SS got disconnected.
@@ -121,7 +122,7 @@ The project involves creating a Network File System (NFS) comprising three main 
 - **Asynchronous Duplication:**
   - Duplicate write commands asynchronously.
 
-#### 3.5 Bookkeeping
+#### 3.5 Bookkeeping 📝
 - **Logging and Message Display:**
   - Record every request or acknowledgment.
     - **Solution:** Every ack to the NM is stored in a list along with the command and the path, and this list can be displayed using the **LOG** statement.
@@ -130,18 +131,21 @@ The project involves creating a Network File System (NFS) comprising three main 
 - **IP Address and Port Recording:**
   - Include IP addresses and ports in the log for traceability.
     - **Solution:** IP addresses and ports involved in each operation are stored in the Naming Server.
-## Assumptions
+
+## Assumptions 🤔
 
 1. Until the client receives a response (either positive or negative), they cannot send another command.
 2. When the client runs the code, it first asks for an ID. After running the code, this ID needs to be assigned to the client. Note that the same ID cannot be given to two clients.
 3. Whatever is written to the file is sent by the client only once, at the beginning.
 4. Before starting the storage server, create an empty directory, paste the file, and then start the server.
 5. The file must have an extension (e.g., a.txt).
-6. Do not read/write a file larger than the buffer size defined in header.h.
+6. Do not read/write a file larger than the buffer size defined in `header.h`.
 7. Since TCP is used, assume that the last transaction will be the only one, and an acknowledgment is sent along with the last action.
 8. Cannot read an empty file.
 9. Run SS in D1->D2->D3->D4....
-## Resources
+
+## Resources 📚
+
 - [1st resource](https://chat.openai.com/share/5c5b5d7b-e497-4f62-8e28-98829f1c1662)
 - [2nd resource](https://chat.openai.com/c/ce337eb1-4953-46d9-8756-ba3294fa46fe)
 - [3rd resource](https://chat.openai.com/share/f37acea8-6bf3-4e18-9710-301f3f26948c)
@@ -151,9 +155,9 @@ The project involves creating a Network File System (NFS) comprising three main 
 - [7th resource](https://chat.openai.com/share/2ca09c48-5062-49b0-90fb-b953645fe90b)
 - [8th resource](https://chat.openai.com/share/c025511c-8229-4cc9-8ad3-912b06bbb75d)
 - [9th resource](https://chat.openai.com/share/374bc858-3fe8-49a3-99dc-5cdb6c7e9b33)
-## Contributors
+
+## Contributors 👨‍💻👩‍💻
 
 - [Harsh Gupta](https://www.linkedin.com/in/harsh-gupta-4ba4a7254) Mainly Contributed In Storage Server
 - [Pratham Omkar Pattanayak](https://www.linkedin.com/in/pratham-omkar-pattanayak-34b7b1245/) Mainly Contributed In Naming Server
 - [Mayank Mittal](https://www.linkedin.com/in/mayank-mittal-174a00254/) Mainly Contributed In Client, Implementing Tries, LRU caching, Book Keeping, Redudency Part
-
